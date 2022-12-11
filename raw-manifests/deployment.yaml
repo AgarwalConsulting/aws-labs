@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-deployment
+  labels:
+    app: express
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 3
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: express-test
+  template:
+    metadata:
+      name: express-test
+      labels:
+        app: express-test
+    spec:
+      containers:
+      - name: express-test
+        image: lukondefmwila/express-test:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 8080
