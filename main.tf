@@ -4,11 +4,13 @@ module "vpc_for_eks" {
   eks_cluster_name = var.cluster_name
   vpc_tag_name = "${var.cluster_name}-vpc"
   region = var.region
+  availability_zones = var.availability_zones
 }
 
 # EKS Cluster
 module "eks_cluster_and_worker_nodes" {
   source = "./eks"
+
   # Cluster
   vpc_id = module.vpc_for_eks.vpc_id
   cluster_sg_name = "${var.cluster_name}-cluster-sg"

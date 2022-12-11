@@ -1,7 +1,7 @@
 ### VPC Network Setup
 resource "aws_vpc" "custom_vpc" {
-  # Your VPC must have DNS hostname and DNS resolution support. 
-  # Otherwise, your worker nodes cannot register with your cluster. 
+  # Your VPC must have DNS hostname and DNS resolution support.
+  # Otherwise, your worker nodes cannot register with your cluster.
 
   cidr_block       = var.vpc_cidr_block
   enable_dns_support = true

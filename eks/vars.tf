@@ -8,7 +8,6 @@ variable "node_group_name" {
   type = string
 }
 
-
 variable "endpoint_private_access" {
   type = bool
   default = true
@@ -38,7 +37,7 @@ variable "public_subnet_ids" {
 
 variable "ami_type" {
   description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group. Defaults to AL2_x86_64. Valid values: AL2_x86_64, AL2_x86_64_GPU."
-  type = string 
+  type = string
   default = "AL2_x86_64"
 }
 
