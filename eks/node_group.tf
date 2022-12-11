@@ -1,9 +1,14 @@
 # Nodes in private subnets
 resource "aws_eks_node_group" "main" {
-  cluster_name    = aws_eks_cluster.main.name
-  node_group_name = var.node_group_name
-  node_role_arn   = aws_iam_role.eks_nodes.arn
-  subnet_ids      = var.private_subnet_ids
+  count           = var.cluster_count
+
+  cluster_name    = aws_eks_cluster.main[count.index].name
+  node_group_name = "${var.node_group_name}-${count.index}"
+  node_role_arn   = aws_iam_role.eks_nodes[count.index].arn
+  subnet_ids      = [
+    var.private_subnet_ids[count.index * 2],
+    var.private_subnet_ids[count.index * 2 + 1],
+  ]
 
   ami_type       = var.ami_type
   disk_size      = var.disk_size
@@ -16,7 +21,7 @@ resource "aws_eks_node_group" "main" {
   }
 
   tags = {
-    Name = var.node_group_name
+    Name = "${var.node_group_name}-${count.index}"
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
@@ -30,10 +35,15 @@ resource "aws_eks_node_group" "main" {
 
 # Nodes in public subnet
 resource "aws_eks_node_group" "public" {
-  cluster_name    = aws_eks_cluster.main.name
-  node_group_name = "${var.node_group_name}-public"
-  node_role_arn   = aws_iam_role.eks_nodes.arn
-  subnet_ids      = var.public_subnet_ids
+  count           = var.cluster_count
+
+  cluster_name    = aws_eks_cluster.main[count.index].name
+  node_group_name = "${var.node_group_name}-public-${count.index}"
+  node_role_arn   = aws_iam_role.eks_nodes[count.index].arn
+  subnet_ids      = [
+    var.public_subnet_ids[count.index * 2],
+    var.public_subnet_ids[count.index * 2 + 1],
+  ]
 
   ami_type       = var.ami_type
   disk_size      = var.disk_size
@@ -46,7 +56,7 @@ resource "aws_eks_node_group" "public" {
   }
 
   tags = {
-    Name = "${var.node_group_name}-public"
+    Name = "${var.node_group_name}-public-${count.index}"
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.

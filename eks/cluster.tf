@@ -1,11 +1,14 @@
 resource "aws_eks_cluster" "main" {
-  name     = var.eks_cluster_name
-  role_arn = aws_iam_role.eks_cluster.arn
+  count    = var.cluster_count
+  name     = "${var.eks_cluster_name}-${count.index}"
+  role_arn = aws_iam_role.eks_cluster[count.index].arn
 
   vpc_config {
-    security_group_ids      = [aws_security_group.eks_cluster.id, aws_security_group.eks_nodes.id]
+    security_group_ids      = [aws_security_group.eks_cluster[count.index].id, aws_security_group.eks_nodes[count.index].id]
+
     endpoint_private_access = var.endpoint_private_access
     endpoint_public_access  = var.endpoint_public_access
+
     subnet_ids = flatten([var.private_subnet_ids, var.public_subnet_ids])
   }
 
