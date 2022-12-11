@@ -3,9 +3,9 @@ resource "aws_vpc" "custom_vpc" {
   # Your VPC must have DNS hostname and DNS resolution support.
   # Otherwise, your worker nodes cannot register with your cluster.
 
-  cidr_block       = var.vpc_cidr_block
-  enable_dns_support = true
-  enable_dns_hostnames = true
+  cidr_block            = var.vpc_cidr_block
+  enable_dns_support    = true
+  enable_dns_hostnames  = true
 
   tags = {
     Name = "${var.vpc_tag_name}"
@@ -15,28 +15,33 @@ resource "aws_vpc" "custom_vpc" {
 
 # Create the private subnet
 resource "aws_subnet" "private_subnet" {
-  count = length(var.availability_zones)
+  count             = length(var.availability_zones) * var.cluster_count
+
   vpc_id            = aws_vpc.custom_vpc.id
-  cidr_block = element(var.private_subnet_cidr_blocks, count.index)
-  availability_zone = element(var.availability_zones, count.index)
+
+  cidr_block        = element(element(local.private_subnet_cidr_blocks, floor(count.index / length(var.availability_zones))), count.index % length(var.availability_zones))
+
+  availability_zone = element(var.availability_zones, count.index % length(var.availability_zones))
 
   tags = {
     Name = "${var.private_subnet_tag_name}"
-    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.eks_cluster_name}-${floor(count.index / length(var.availability_zones))}" = "shared"
     "kubernetes.io/role/internal-elb" = 1
   }
 }
 
 # Create the public subnet
 resource "aws_subnet" "public_subnet" {
-  count = length(var.availability_zones)
+  count             = length(var.availability_zones) * var.cluster_count
   vpc_id            = "${aws_vpc.custom_vpc.id}"
-  cidr_block = element(var.public_subnet_cidr_blocks, count.index)
-  availability_zone = element(var.availability_zones, count.index)
+
+  cidr_block        = element(element(local.public_subnet_cidr_blocks, floor(count.index / length(var.availability_zones))), count.index % length(var.availability_zones))
+
+  availability_zone = element(var.availability_zones, count.index % length(var.availability_zones))
 
   tags = {
     Name = "${var.public_subnet_tag_name}"
-    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.eks_cluster_name}-${floor(count.index / length(var.availability_zones))}" = "shared"
     "kubernetes.io/role/elb" = 1
   }
 
@@ -68,7 +73,7 @@ resource "aws_route_table" "main" {
 
 # Route table and subnet associations
 resource "aws_route_table_association" "internet_access" {
-  count = length(var.availability_zones)
+  count          = length(var.availability_zones) * var.cluster_count
   subnet_id      = "${aws_subnet.public_subnet[count.index].id}"
   route_table_id = "${aws_route_table.main.id}"
 }

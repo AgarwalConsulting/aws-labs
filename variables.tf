@@ -15,3 +15,9 @@ variable "availability_zones" {
   default = ["us-east-1a", "us-east-1b"]
   type = list(string)
 }
+
+variable "cluster_count" {
+  description = "No of clusters to create"
+  default = 2
+  type = number
+}

@@ -6,7 +6,7 @@ resource "aws_eks_cluster" "main" {
     security_group_ids      = [aws_security_group.eks_cluster.id, aws_security_group.eks_nodes.id]
     endpoint_private_access = var.endpoint_private_access
     endpoint_public_access  = var.endpoint_public_access
-    subnet_ids = var.eks_cluster_subnet_ids
+    subnet_ids = flatten([var.private_subnet_ids, var.public_subnet_ids])
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.

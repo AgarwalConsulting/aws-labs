@@ -1,6 +1,9 @@
 # VPC for EKS
 module "vpc_for_eks" {
   source = "./vpc"
+
+  cluster_count = var.cluster_count
+
   eks_cluster_name = var.cluster_name
   vpc_tag_name = "${var.cluster_name}-vpc"
   region = var.region
@@ -11,12 +14,14 @@ module "vpc_for_eks" {
 module "eks_cluster_and_worker_nodes" {
   source = "./eks"
 
+  cluster_count = var.cluster_count
+
   # Cluster
   vpc_id = module.vpc_for_eks.vpc_id
   cluster_sg_name = "${var.cluster_name}-cluster-sg"
   nodes_sg_name = "${var.cluster_name}-node-sg"
   eks_cluster_name = var.cluster_name
-  eks_cluster_subnet_ids = flatten([module.vpc_for_eks.public_subnet_ids, module.vpc_for_eks.private_subnet_ids])
+
   # Node group configuration (including autoscaling configurations)
   pvt_desired_size = 1
   pvt_max_size = 2
