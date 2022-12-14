@@ -18,6 +18,15 @@ variable "availability_zones" {
 
 variable "cluster_count" {
   description = "No of clusters to create"
-  default = 2
+  default = 21
   type = number
+}
+
+variable "user_emails" {
+  description = "User Email IDs"
+  type = list(string)
+  default = [
+    "gaurav@codermana.com",
+    "gauravagarwalr@gmail.com"
+  ]
 }

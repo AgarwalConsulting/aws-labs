@@ -1,4 +1,4 @@
-// TODO: Improve this calculation
+// TODO: Improve this calculation, base it on length of availability_zones
 locals {
   private_subnet_cidr_blocks = [for i in range(var.cluster_count) : ["10.0.${(i * 4) + 0}.0/24", "10.0.${(i * 4) + 1}.0/24"]]
 

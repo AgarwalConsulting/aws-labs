@@ -1,3 +1,9 @@
+module "user_accounts" {
+  source = "./users"
+
+  user_emails = var.user_emails
+}
+
 # VPC for EKS
 module "vpc_for_eks" {
   source = "./vpc"

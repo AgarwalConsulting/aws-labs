@@ -1,0 +1,8 @@
+output "participant_creds" {
+  value = module.user_accounts.participant_creds
+  sensitive = true
+}
+
+output "cluster_names" {
+  value = module.eks_cluster_and_worker_nodes.cluster_names
+}
