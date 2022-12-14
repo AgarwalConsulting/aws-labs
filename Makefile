@@ -12,3 +12,6 @@ eksctl-teardown:
 
 connect-eksctl:
 	aws eks update-kubeconfig --name ${AWS_CLUSTER_NAME} --region us-east-1
+
+apply-access:
+	./scripts/eks/apply-access.sh

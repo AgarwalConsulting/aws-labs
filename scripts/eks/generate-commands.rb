@@ -10,10 +10,6 @@ participants.each do |info|
   arn = info["arn"]
   name = arn.split("/").last
 
-  if name == "participants-01"
-    next
-  end
-
   puts "# ----"
 
   puts "aws eks update-kubeconfig --name #{cluster_name} --region us-east-1"
