@@ -1,6 +1,8 @@
 module "user_accounts" {
   source = "./users"
 
+  eks_cluster_name = var.cluster_name
+
   user_emails = var.user_emails
 }
 
@@ -8,7 +10,8 @@ module "user_accounts" {
 module "vpc_for_eks" {
   source = "./vpc"
 
-  cluster_count = var.cluster_count
+  cluster_count = length(var.user_emails)
+  # cluster_count = var.cluster_count
 
   eks_cluster_name = var.cluster_name
   vpc_tag_name = "${var.cluster_name}-vpc"
@@ -20,7 +23,8 @@ module "vpc_for_eks" {
 module "eks_cluster_and_worker_nodes" {
   source = "./eks"
 
-  cluster_count = var.cluster_count
+  cluster_count = length(var.user_emails)
+  # cluster_count = var.cluster_count
 
   # Cluster
   vpc_id = module.vpc_for_eks.vpc_id

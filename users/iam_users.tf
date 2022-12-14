@@ -1,7 +1,7 @@
 resource "aws_iam_user" "participants" {
   count = local.user_count
 
-  name = "participants-${count.index}"
+  name = "participants-${format("%02d", count.index + 1)}"
   path = "/participants/"
 }
 

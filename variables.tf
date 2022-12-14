@@ -18,7 +18,7 @@ variable "availability_zones" {
 
 variable "cluster_count" {
   description = "No of clusters to create"
-  default = 21
+  default = 2
   type = number
 }
 
