@@ -1,6 +1,6 @@
 variable "region" {
   description = "AWS region to deploy to"
-  default = "us-east-1"
+  default     = "ap-south-1"
   type        = string
 }
 
@@ -19,6 +19,12 @@ variable "availability_zones" {
 variable "cluster_count" {
   description = "No of clusters to create"
   default = 2
+  type = number
+}
+
+variable "instance_count" {
+  description = "No of instances to create"
+  default = 16
   type = number
 }
 
