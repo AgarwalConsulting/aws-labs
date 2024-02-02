@@ -1,8 +1,8 @@
 resource "aws_eks_cluster" "main" {
   count    = var.cluster_count
-  name     = "${var.eks_cluster_name}-${format("%02d", count.index + 1)}"
+  name     = "${var.eks_cluster_name}-${format("%02d", count.index + 1)}" // If this changes, change the tag in the public/private subnets
   role_arn = aws_iam_role.eks_cluster[count.index].arn
-  version  = "1.24"
+  version  = var.kubernetes_version
 
   vpc_config {
     security_group_ids      = [aws_security_group.eks_cluster[count.index].id, aws_security_group.eks_nodes[count.index].id]

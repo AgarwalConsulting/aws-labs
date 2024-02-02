@@ -3,6 +3,11 @@ variable "eks_cluster_name" {
   type = string
 }
 
+variable "kubernetes_version" {
+  description = "Kubernetes version for EKS cluster"
+  type = string
+}
+
 variable "node_group_name" {
   description = "Name of the Node Group"
   type = string
@@ -95,7 +100,7 @@ variable nodes_sg_name {
 }
 
 variable vpc_id {
-  description = "VPC ID from which belogs the subnets"
+  description = "VPC ID from which belongs the subnets"
   type        = string
 }
 

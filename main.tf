@@ -1,3 +1,4 @@
+# User accounts
 # module "user_accounts" {
 #   source = "./users"
 
@@ -23,8 +24,8 @@
 # module "eks_cluster_and_worker_nodes" {
 #   source = "./eks"
 
-#   cluster_count = length(var.user_emails)
-#   # cluster_count = var.cluster_count
+#   cluster_count = length(var.cluster_count)
+#   kubernetes_version = var.kubernetes_version
 
 #   # Cluster
 #   vpc_id = module.vpc_for_eks.vpc_id
@@ -36,14 +37,30 @@
 #   pvt_desired_size = 2
 #   pvt_max_size = 3
 #   pvt_min_size = 1
+
 #   pblc_desired_size = 1
 #   pblc_max_size = 2
 #   pblc_min_size = 1
+
 #   endpoint_private_access = true
 #   endpoint_public_access = true
+
 #   node_group_name = "${var.cluster_name}-node-group"
+
 #   private_subnet_ids = module.vpc_for_eks.private_subnet_ids
 #   public_subnet_ids = module.vpc_for_eks.public_subnet_ids
+# }
+
+# RDS
+# module "rds_with_subnet" {
+#   source = "./rds"
+
+#   db_names = local.db_names
+#   db_instance_size = var.db_instance_size
+#   db_engine_version = var.db_engine_version
+
+#   vpc_id = module.vpc_for_eks.vpc_id
+#   db_subnet_ids = module.vpc_for_eks.public_subnet_ids
 # }
 
 # EC2 Instance

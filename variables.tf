@@ -16,6 +16,12 @@ variable "availability_zones" {
   type = list(string)
 }
 
+variable "kubernetes_version" {
+  description = "Kubernetes version for EKS cluster"
+  default = "1.28"
+  type = string
+}
+
 variable "cluster_count" {
   description = "No of clusters to create"
   default = 2
@@ -35,4 +41,20 @@ variable "user_emails" {
     "gaurav@codermana.com",
     "gauravagarwalr@gmail.com"
   ]
+}
+
+variable "db_instance_size" {
+  description = "The size of DB instance"
+  default = "db.t3.micro"
+  type = string
+}
+
+variable "db_engine_version" {
+  description = "The Postgres engine version"
+  default = "15.3"
+  type = string
+}
+
+locals {
+  db_names = ["${var.cluster_name}-db", "${var.cluster_name}-db-monitor"]
 }
