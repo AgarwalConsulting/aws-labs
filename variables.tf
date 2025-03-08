@@ -12,25 +12,25 @@ variable "cluster_name" {
 
 variable "availability_zones" {
   description = "Subnet availability zone"
-  default = ["us-east-1a", "us-east-1b"]
+  default = ["ap-south-1a", "ap-south-1b"]
   type = list(string)
 }
 
 variable "kubernetes_version" {
   description = "Kubernetes version for EKS cluster"
-  default = "1.28"
+  default = "1.32"
   type = string
 }
 
 variable "cluster_count" {
   description = "No of clusters to create"
-  default = 2
+  default = 1
   type = number
 }
 
 variable "instance_count" {
   description = "No of instances to create"
-  default = 16
+  default = 1
   type = number
 }
 
@@ -51,7 +51,7 @@ variable "db_instance_size" {
 
 variable "db_engine_version" {
   description = "The Postgres engine version"
-  default = "15.3"
+  default = "17.4"
   type = string
 }
 
