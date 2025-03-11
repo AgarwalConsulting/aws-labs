@@ -10,3 +10,7 @@ output "cluster_names" {
 output "instance_ips" {
   value = module.ec2_instances.ip_address
 }
+
+output "db_connection_strings" {
+  value = module.rds_with_subnet.db_connection_strings
+}
